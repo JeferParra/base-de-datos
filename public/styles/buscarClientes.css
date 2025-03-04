@@ -1,0 +1,252 @@
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('../assets/company.jpg');
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: calc(100vh - 164px);
+  z-index: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 95%;
+}
+
+/* contenido */
+
+.counter {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+  width: 100vw;
+  z-index: 1;
+}
+
+.coincidencias {
+  text-align: center;
+  font-weight: bold;
+  background-color: white;
+}
+
+.title {
+  margin-top: 20px;
+  background-color: white;
+  z-index: 1;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(20, 50px);
+  grid-gap: 30px 15px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.counter label {
+  font-weight: bold;
+  text-align: right;
+  grid-column: span 2;
+  padding-right: 0;
+}
+
+#buscar-en {
+  grid-column: span 8;
+}
+
+#buscar-por {
+  grid-column: span 8;
+}
+
+#vehiculo {
+  grid-column: span 8;
+}
+
+#ruta {
+  grid-column: span 8;
+}
+
+#buscar {
+  grid-column: span 8;
+}
+
+form>button {
+  width: 100px;
+  height: 50px;
+  grid-column: 1 / -1;
+  justify-self: center;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+form>button:hover {
+  background-color: #c2c2c2;
+}
+
+/* tabla de datos clientes */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 10px;
+  border-collapse: collapse;
+  padding-bottom: 50px
+}
+
+/* tabla de datos header */
+
+.header-table {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  font-weight: bold;
+  width: 90vw;
+  background-color: #c2c2c2;
+}
+
+.item-title {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-title:last-child {
+  border-right: 1px solid black;
+}
+
+/* tabla de tados */
+
+.item-table {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  width: 90vw;
+  background-color: #f4f4f4;
+}
+
+.item-table .item {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-table .item:last-child {
+  border-right: 1px solid black;
+}
+
+.item-table .item {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.item-table input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-table .codigo, .item-table div.codigo {
+  grid-column: span 1;
+}
+
+.header-table .nombre, .item-table div.nombre {
+  grid-column: span 3;
+}
+
+.header-table .direccion, .item-table div.direccion {
+  grid-column: span 3;
+}
+
+.header-table .barrio, .item-table div.barrio {
+  grid-column: span 2;
+}
+
+.header-table .telefono, .item-table div.telefono {
+  grid-column: span 2;
+}
+
+.header-table .descripcion, .item-table div.descripcion {
+  grid-column: span 3;
+}
+
+.header-table .botellones, .item-table div.botellones {
+  grid-column: span 1;
+}
+
+.header-table .vehiculo, .item-table div.vehiculo {
+  grid-column: span 2;
+}
+
+.header-table .ruta, .item-table div.ruta {
+  grid-column: span 3;
+}
+
+.header-table .saldo, .item-table div.saldo {
+  grid-column: span 2;
+}
+
+.item-table div.saldo {
+  text-align: right;
+}
+
+.header-table .estado, .item-table div.estado {
+  grid-column: span 2;
+}
+
+.header-table .button, .item-table div.button {
+  grid-column: span 1;
+}
+
+.item.button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.item > .done-cancel {
+  width: 100%;
+  height: 100%;
+}
+
+.item > .done-cancel > button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 100%;
+  border: none;
+}
+
+.item.button > button {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.item.button > button:hover, .item > .done-cancel > button:hover {
+  background-color: #c2c2c2;
+}
+

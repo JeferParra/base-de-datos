@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base de datos Rutas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/headerFooter.css">
+  <link rel="stylesheet" href="styles/buscarClientes.css">
+
+</head>
+<body>
+
+<%- include('partials/header.ejs') %>
+<div class="counter">
+
+  <h1 class="title">Buscar Clientes</h1>
+
+  <form class="grid-container" action="/buscar-filtrado-clientes" method="post">
+    
+    <label for="buscarEn">Buscar en:</label>
+    <select id="buscar-en" name="buscarEn">
+      <option value="todos">Todos</option>
+      <option value="Activo">Activo</option>
+      <option value="Inactivo">Inactivo</option>
+    </select>
+
+    <label for="buscarPor">Buscar por:</label>
+    <select type="text" id="buscar-por" name="buscarPor" onchange="activarEspacios()">
+      <option value="todos">Todos</option>
+      <option value="codigo">Codigo</option>
+      <option value="barrio">Barrio</option>
+      <option value="nombre">Nombre</option>
+      <option value="vehiculo-ruta">Vehiculo/Ruta</option>
+    </select>
+
+    <label for="vehiculo">Vehiculo:</label>
+    <select type="text" id="vehiculo" name="vehiculo" disabled="true">
+      <option value="todos" selected>Todos</option>
+    <% for(let vehiculo of vehiculos) {%>
+      <option value="<%=vehiculo.vehiculo%>"><%=vehiculo.vehiculo%></option>
+    <% } %>
+    </select>
+
+    <label for="ruta">Ruta:</label>
+    <select type="text" id="ruta" name="ruta" disabled="true">
+      <option value="todos">Todos</option>
+      <% for(let ruta of rutas) {%>
+        <option value="<%= ruta.ruta %>"><%= ruta.ruta %></option>
+      <% } %>
+    </select>
+
+    <label for="buscar">Buscar:</label>
+    <input type="text" id="buscar" name="buscar" disabled="true" autocomplete="off" autofocus required>
+
+    <button type="submit">Buscar</button>
+
+  </form>
+</div>
+
+<div class="table">
+
+  <div class="coincidencias">Coincidencias encontradas: <%= clientes.length %></div>
+  
+  <div class="header-table">
+    <div class="item-title codigo">Codigo</div>
+    <div class="item-title nombre">Nombre</div>
+    <div class="item-title direccion">Direccion</div>
+    <div class="item-title barrio">Barrio</div>
+    <div class="item-title telefono">Telefono</div>
+    <div class="item-title descripcion">Descripcion</div>
+    <div class="item-title botellones">Bot</div>
+    <div class="item-title vehiculo">Vehiculo</div>
+    <div class="item-title ruta">Ruta</div>
+    <div class="item-title saldo">Saldo</div>
+    <div class="item-title estado">Estado</div>
+    <div class="item-title button"></div>
+  </div>
+
+  <% for(let cliente of clientes) {%>
+
+    <form class="editar" action="/edit" method="post" id="formCliente">
+      <div class="item-table">
+
+        <div class="item codigo">
+          <label for="codigo"><%= cliente.codigo %></label>
+          <input type="number" maxlength="4" name="codigo" value="<%= cliente.codigo %>" hidden >
+        </div>
+
+        <div class="item nombre">
+          <label id="nombre-label-<%=cliente.codigo%>" for="nombre"><%= cliente.nombre %></label>
+          <input id="nombre-input-<%=cliente.codigo%>" type="text" name="nombre" value="<%= cliente.nombre %>" hidden >
+        </div>
+
+        <div class="item direccion">
+          <label id="direccion-label-<%=cliente.codigo%>" for="direccion"><%= cliente.direccion %></label>
+          <input id="direccion-input-<%=cliente.codigo%>" type="text" name="direccion" value="<%= cliente.direccion %>" hidden >
+        </div>
+
+        <div class="item barrio">
+          <label id="barrio-label-<%=cliente.codigo%>" for="barrio"><%= cliente.barrio %></label>
+          <input id="barrio-input-<%=cliente.codigo%>" type="text" name="barrio" value="<%= cliente.barrio %>" hidden >
+        </div>
+
+        <div class="item telefono">
+          <label id="telefono-label-<%=cliente.codigo%>" for="telefono"><%= cliente.telefono %></label>
+          <input id="telefono-input-<%=cliente.codigo%>" type="tel" name="telefono" value="<%= cliente.telefono %>" maxlength="10" hidden >
+        </div>
+
+        <div class="item descripcion">
+          <label id="descripcion-label-<%=cliente.codigo%>" for="descripcion"><%= cliente.descripcion %></label>
+          <input id="descripcion-input-<%=cliente.codigo%>" type="text" name="descripcion" value="<%= cliente.descripcion %>" hidden >
+        </div>
+
+        <div class="item botellones">
+          <label for="botellones"><%= cliente.botellones %></label>
+          <input type="text" name="botellones" value="<%= cliente.botellones %>" hidden >
+        </div>
+
+        <div class="item vehiculo">
+          <label id="vehiculo-label-<%=cliente.codigo%>" for="vehiculo"><%= cliente.vehiculo %></label>
+          <select name="vehiculo" id="vehiculo-input-<%=cliente.codigo%>" hidden>
+            <% let opcionInicialVehiculo = cliente.vehiculo %>
+            <option value="<%= opcionInicialVehiculo %>"><%= opcionInicialVehiculo %></option>
+            <% for(let vehiculo of vehiculos) {%>
+              <% if (vehiculo.vehiculo !== opcionInicialVehiculo) {%>
+                <option value="<%=vehiculo.vehiculo%>"><%=vehiculo.vehiculo%></option>
+              <% } %>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="item ruta">
+          <label id="ruta-label-<%=cliente.codigo%>" for="ruta"><%= cliente.ruta %></label>
+          <select name="ruta" id="ruta-input-<%=cliente.codigo%>" hidden>
+            <% let opcionInicialRuta = cliente.ruta%>
+            <option value="<%= opcionInicialRuta %>"><%= opcionInicialRuta %></option>
+            <% for(let ruta of rutas) {%>
+              <% if(ruta.ruta !== opcionInicialRuta) { %>
+                <option value="<%=ruta.ruta%>"><%=ruta.ruta%></option>
+              <% } %>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="item saldo">
+          <label for="saldo">$ <%= cliente.saldo.toLocaleString('es-ES', {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }); %></label>
+          <input type="text" name="saldo" value="<%= cliente.saldo %>" hidden >
+        </div>
+
+        <div class="item estado">
+          <label id="estado-label-<%=cliente.codigo%>" for="estado"><%= cliente.estado %></label>
+          <select name="estado" id="estado-input-<%=cliente.codigo%>" hidden>
+            <% let opcionInicialEstado = cliente.estado %>
+            <% if(opcionInicialEstado === 'Activo') { %>
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            <% } else { %>
+              <option value="inactivo">Inactivo</option>
+              <option value="activo">Activo</option>
+            <% } %>
+          </select>
+          <input id="estado-input-<%=cliente.codigo%>" type="text" name="estado" value="<%= cliente.estado %>" hidden >
+        </div>
+
+        <div class="item button">
+          <button id="edit-button-<%=cliente.codigo%>" type="button" class="edit-button" onclick="editar('<%=cliente.codigo%>')">✎</button>
+          <div class="done-cancel" id="done-cancel-<%=cliente.codigo%>" hidden>
+            <button id="save-button-<%=cliente.codigo%>" type="submit" id="done<%=cliente.codigo%>">✔</button>
+            <button id="cancel-button-<%=cliente.codigo%>" type="button" id="cancel<%=cliente.codigo%>" onclick="cancelarEditar('<%= cliente.codigo %>')">X</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  <% } %>
+</div>
+
+
+<script>
+
+  let editando = false;
+
+  function activarEspacios() {
+    const opcion = document.getElementById('buscar-por').value;
+
+    if(opcion === 'vehiculo-ruta') {
+      document.getElementById('vehiculo').disabled = false;
+      document.getElementById('ruta').disabled = false;
+      document.getElementById('buscar').disabled = true;
+      document.getElementById('buscar').value = '';
+    } else if(opcion === 'todos') {
+      document.getElementById('buscar').disabled = true;
+      document.getElementById('vehiculo').disabled = true;
+      document.getElementById('ruta').disabled = true;
+      document.getElementById('vehiculo').value = 'todos';
+      document.getElementById('ruta').value = 'todos';
+      document.getElementById('buscar').value = '';
+    } else {
+      document.getElementById('buscar').disabled = false;
+      document.getElementById('vehiculo').disabled = true;
+      document.getElementById('ruta').disabled = true;
+      document.getElementById('vehiculo').value = 'todos';
+      document.getElementById('ruta').value = 'todos';
+    }
+  }
+  
+  function editar(codigo) {
+    if(editando === false) {
+      document.getElementById("nombre-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("direccion-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("barrio-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("telefono-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("descripcion-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("vehiculo-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("ruta-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("estado-label-" + codigo).setAttribute('hidden', true);
+      document.getElementById("edit-button-" + codigo).setAttribute('hidden', true);
+
+      document.getElementById("nombre-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("direccion-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("barrio-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("telefono-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("descripcion-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("vehiculo-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("ruta-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("estado-input-" + codigo).removeAttribute('hidden');
+      document.getElementById("done-cancel-" + codigo).removeAttribute('hidden');
+
+      editando = true;
+    }
+  }
+
+  function cancelarEditar(codigo) {
+    document.getElementById("nombre-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("direccion-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("barrio-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("telefono-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("descripcion-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("vehiculo-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("ruta-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("estado-label-" + codigo).removeAttribute('hidden');
+    document.getElementById("edit-button-" + codigo).removeAttribute('hidden');
+
+    document.getElementById("nombre-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("direccion-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("barrio-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("telefono-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("descripcion-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("vehiculo-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("ruta-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("estado-input-" + codigo).setAttribute('hidden', true);
+    document.getElementById("done-cancel-" + codigo).setAttribute('hidden', true);
+
+    editando = false;
+  }
+
+</script>
+<%- include('partials/footer.ejs') %>

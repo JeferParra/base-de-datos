@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('../assets/company.jpg');
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: calc(100vh - 164px);
+  z-index: 0;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 95%;
+}
+
+/* contenido */
+
+.counter {
+  margin-top: 100px;
+  height: calc(100vh - 124px);
+  width: 100vw;
+  z-index: 1;
+}
+
+img {
+  height: 70vh;
+  border-radius: 50%;
+}
+
+.title {
+  margin: 20px 0 0 20px;
+  z-index: 1;
+}
+
+/* header */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #4CAF50;
+}
+.navbar-brand {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  color: white !important;
+  margin-right: 40%
+}
+.navbar-nav .nav-link {
+  color: white !important;
+  font-size: 1.1rem;
+}
+
+li.nav-item, .dropdown-item {
+  list-style-type: none;
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1.8rem;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+li a.dropdown-item:hover {
+  background-color: #348136;
+}
+
+.dropdown-menu {
+  display: none;
+  opacity: 0;
+  max-height: 0;
+  border: none;
+  background-color: white;
+  overflow: hidden;
+  text-align: center;
+  min-width: 11vw;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.nav-item:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  max-height: max-content;
+}
+
+/* botones */
+
+.item {
+  font-family: "Roboto", sans-serif;
+  text-transform: capitalize;
+  text-align: center;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  padding: 25px 15px;
+  box-sizing: border-box;
+  font-size: 1.8rem;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.dropdown-item {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input:hover, .item:hover {
+  background-color: #348136;
+}
+
+/* footer */
+footer {
+  color: black;
+  text-align: center;
+}
