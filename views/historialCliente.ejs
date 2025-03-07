@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base de datos Rutas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/headerFooter.css">
+  <link rel="stylesheet" href="styles/historialCliente.css">
+
+</head>
+<body>
+
+<%- include('partials/header.ejs') %>
+<div class="counter">
+
+  <h1 class="title">Historial Cliente</h1>
+
+  <form class="grid-container" action="/historial-cliente" method="post">
+
+    <div class="mensaje"><p><%= mensaje %></p></div>
+
+    <div class="span"></div>
+    <input class="buscar-codigo" type="text" name="codigo" placeholder="Código" maxlength="4" autocomplete="off" autofocus>
+    <div class="span"></div>
+
+    <button type="submit">Buscar</button>
+
+  </form>
+</div>
+
+<div class="informacion" <%= mostrarCliente ? '' : 'hidden' %>>
+
+  <p><span class="title-info">Codigo:</span> <%= infoCliente && infoCliente.codigo ? infoCliente.codigo : '' %></p>
+  <p><span class="title-info">Nombre:</span> <%= infoCliente && infoCliente.nombre ? infoCliente.nombre : '' %></p>
+  <p><span class="title-info">Direccion:</span> <%= infoCliente && infoCliente.direccion ? infoCliente.direccion : '' %></p>
+  <p><span class="title-info">Barrio:</span> <%= infoCliente && infoCliente.barrio ? infoCliente.barrio : '' %></p>
+  <p><span class="title-info">Telefono:</span> <%= infoCliente && infoCliente.telefono ? infoCliente.telefono : '' %></p>
+  <p><span class="title-info">Descripcion:</span> <%= infoCliente && infoCliente.descripcion ? infoCliente.descripcion : '' %></p>
+  <p><span class="title-info">Saldo:</span> <%= infoCliente && infoCliente.saldo ? ('$' + infoCliente.saldo) : '' %></p>
+  <p><span class="title-info">Botellones prestados:</span> <%= infoCliente && infoCliente.botellones ? infoCliente.botellones : '' %></p>
+  <p><span class="title-info">Vehiculo:</span> <%= infoCliente && infoCliente.vehiculo ? infoCliente.vehiculo : '' %></p>
+  <p><span class="title-info">Ruta:</span> <%= infoCliente && infoCliente.ruta ? infoCliente.ruta : '' %></p>
+  <p><span class="title-info">Estado:</span> <%= infoCliente && infoCliente.estado ? infoCliente.estado : '' %></p>
+
+</div>
+
+<div class="table" <%= mostrarTabla ? '' : 'hidden' %>>
+  
+  <div class="header-table">
+    <div class="item-title fecha">Fecha</div>
+    <div class="item-title cantidad">Cantidad</div>
+    <div class="item-title valor">Valor</div>
+    <div class="item-title pagos">Pagos</div>
+    <div class="item-title saldo">Saldo</div>
+    <div class="item-title botellon">Botellon P(+) R(-)</div>
+    <div class="item-title forma-de-pago">Forma de Pago</div>
+    <div class="item-title modificacion">Fecha Modificacion</div>
+  </div>
+
+  <div class="item-table">
+    
+    <% for(let venta of ventas) { %>
+
+      <label id="fecha-<%= venta.id %>" class="fecha item" for="fecha"><%= venta.fecha %></label>
+      <label id="cantidad-<%= venta.id %>" class="cantidad item" for="cantidad"><%= venta.cantidad %></label>
+      <label id="valor-<%= venta.id %>" class="valor item" for="valor"><%= venta.valor %></label>
+      <label id="pagos-<%= venta.id %>" class="pagos item" for="pagos"><%= (venta.contado + venta.abono) %></label>
+      <label id="saldo-<%= venta.id %>" class="saldo item" for="saldo"><%= venta.saldo %></label>
+      <label id="botellon-<%= venta.id %>" class="botellon item" for="botellon"><%= venta.prestado_recuperado %></label>
+      <label id="forma-de-pago-<%= venta.id %>" class="forma-de-pago item" for="forma-de-pago"><%= venta.forma_de_pago %></label>
+      <label id="modificacion-<%= venta.id %>" class="modificacion item" for="modificacion"><%= venta.fecha_modificaion %></label>
+      
+    <% } %>
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+  
+
+</script>
+<%- include('partials/footer.ejs') %>

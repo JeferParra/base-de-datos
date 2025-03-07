@@ -1,0 +1,248 @@
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('../assets/company.jpg');
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: calc(100vh - 164px);
+  z-index: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 95%;
+}
+
+/* contenido */
+
+.counter {
+  display: flex;
+  place-items: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+  width: 100vw;
+  z-index: 1;
+}
+
+.resumen {
+  text-align: center;
+  font-weight: bold;
+  background-color: white;
+}
+
+.title {
+  margin-top: 20px;
+  background-color: white;
+  z-index: 1;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(20, 50px);
+  grid-gap: 30px 15px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.counter label {
+  font-weight: bold;
+  text-align: right;
+  grid-column: span 4;
+  padding-right: 0;
+}
+
+.buscar-codigo {
+  text-align: center;
+  grid-column: span 4;
+}
+
+.span {
+  grid-column: span 8;
+}
+
+form>button {
+  width: 100px;
+  height: 50px;
+  grid-column: 1 / -1;
+  justify-self: center;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+form>button:hover {
+  background-color: #c2c2c2;
+}
+
+/* informacion encontrada */
+
+.informacion {
+  margin: 20px 100px;
+}
+
+.informacion p {
+  padding: 0;
+  margin: 0;
+}
+
+.title-info {
+  font-weight: bold;
+}
+
+.mensaje {
+  color: red;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  grid-column: span 20;
+}
+
+.mensaje p {
+  margin: 0;
+  padding: 0;
+}
+
+/* tabla de datos clientes */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 10px;
+  border-collapse: collapse;
+  padding-bottom: 50px
+}
+
+/* tabla de datos header */
+
+.header-table, .item-table {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  width: 90vw;
+}
+
+.header-table {
+  background-color: #c2c2c2;
+  font-weight: bold;
+}
+
+.item-title {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-title:last-child {
+  border-right: 1px solid black;
+}
+
+/* tabla de tados */
+
+.item-table {
+  background-color: #f4f4f4;
+}
+
+.item-table .item {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-table .item.modificacion {
+  border-right: 1px solid black;
+}
+
+.item-table .item {
+  font-size: 16px;
+  /* line-height: 1; */
+}
+
+.header-table .fecha, .item-table .fecha {
+  grid-column: span 3;
+}
+
+.header-table .cantidad, .item-table .cantidad {
+  grid-column: span 3;
+}
+
+.header-table .valor, .item-table .valor {
+  grid-column: span 3;
+}
+
+.header-table .pagos, .item-table .pagos {
+  grid-column: span 3;
+}
+
+.header-table .saldo, .item-table .saldo {
+  grid-column: span 3;
+}
+
+.header-table .botellon, .item-table .botellon {
+  grid-column: span 3;
+}
+
+.header-table .forma-de-pago, .item-table .forma-de-pago {
+  grid-column: span 3;
+}
+
+.header-table .modificacion, .item-table .modificacion {
+  grid-column: span 3;
+}
+
+.item.button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.item > .done-cancel {
+  width: 100%;
+  height: 100%;
+}
+
+.item > .done-cancel > button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 100%;
+  border: none;
+}
+
+.item.button > button {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.item.button > button:hover, .item > .done-cancel > button:hover {
+  background-color: #c2c2c2;
+}
+

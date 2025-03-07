@@ -22,6 +22,7 @@ let clientes = [];
 let rutas = [];
 let vehiculos = [];
 let productos = [];
+let ventas = [];
 
 getData();
 
@@ -139,6 +140,69 @@ app.post('/buscar-filtrado-clientes', async (req, res) => {
     console.error('Error al realizar la consulta: ', error)
   }
 });
+
+// Historial Cliente
+
+app.get('/historialCliente', (req, res) => {
+
+  ventas = [];
+
+  res.render('historialCliente.ejs', {
+    ventas,
+    mostrarTabla: false,
+    infoCliente: null,
+    mostrarCliente: null,
+    mensaje: null
+  })
+})
+
+app.post('/historial-cliente', async (req, res) => {
+
+  const codigo = req.body.codigo;
+
+  if (!codigo || codigo.trim() === '') {
+    return res.render('historialCliente.ejs', {
+      ventas: [],
+      mostrarTabla: false,
+      infoCliente: null,
+      mostrarCliente: null,
+      mensaje: "El campo de código no puede estar vacío."
+    });
+  }
+
+  try {
+    const result = await db.query('SELECT * FROM ventas WHERE codigo = $1 ORDER BY fecha ASC', [codigo]);
+    const dataCliente = await db.query('SELECT * FROM clientes WHERE codigo = $1', [codigo]);
+
+    ventas = result.rows;
+    let mensaje = '';
+    const infoCliente = dataCliente.rows.length > 0 ? dataCliente.rows[0] : null;
+
+    if (!infoCliente) {
+      mensaje = `El cliente con el codigo ${codigo} no existe en la base de datos.`
+    } else if (ventas.length === 0) {
+      mensaje = `El cliente con el codigo ${codigo} no ha realizado compras aun.`
+    }
+
+    res.render('historialCliente.ejs', {
+      ventas,
+      mostrarTabla: ventas.length > 0,
+      mostrarCliente: infoCliente !== null,
+      infoCliente,
+      mensaje
+    })
+
+  } catch (error) {
+    console.error(`Error en la consulta: `, error);
+
+    res.render('historialCliente.ejs', {
+      ventas: [],
+      mostrarTabla: false,
+      infoCliente: null
+    })
+  }
+
+})
 
 // Cargar Planilla
 
@@ -261,8 +325,6 @@ app.post('/cargar-venta', async (req, res) => {
     formaDePago: formaDePago
   };
 
-  // Falta configurar el saldo, lo que hay que hacer es buscar la deuda existente del cliente y sumarle la actual
-
   try {
     // actualizar saldo en la base de datos del cliente
     await db.query('UPDATE clientes SET saldo = $1 WHERE codigo = $2', [saldo, codigo]);
@@ -271,9 +333,9 @@ app.post('/cargar-venta', async (req, res) => {
     // cargar datos de la venta
     await db.query(`
       INSERT INTO ventas 
-      (codigo, producto, valor, cantidad, contado, credito, abono, saldo, botellones, forma_de_pago, fecha, vehiculo, ruta)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-    `, [codigo, producto, valor, cantidad, contado, credito, abono, saldo, botellonesCliente, formaDePago, fecha, vehiculo, ruta])
+      (codigo, producto, valor, cantidad, contado, credito, abono, saldo, botellones, forma_de_pago, fecha, vehiculo, ruta, prestado_recuperado)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+    `, [codigo, producto, valor, cantidad, contado, credito, abono, saldo, botellonesCliente, formaDePago, fecha, vehiculo, ruta, botellones])
 
     res.render('cargarPlanilla.ejs', {
       fecha,
