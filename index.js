@@ -326,7 +326,7 @@ app.post('/cargar-venta', async (req, res) => {
   };
 
   try {
-    // actualizar saldo en la base de datos del cliente
+    // actualizar saldo y cantidad de botellones prestados en la base de datos del cliente
     await db.query('UPDATE clientes SET saldo = $1 WHERE codigo = $2', [saldo, codigo]);
     await db.query('UPDATE clientes SET botellones = $1 WHERE codigo = $2', [botellonesCliente, codigo]);
 
@@ -351,9 +351,114 @@ app.post('/cargar-venta', async (req, res) => {
   } catch (error) {
     console.error("Error al cargar la venta")
   }
-
-  
 });
+
+// Ver planilla
+
+app.get('/verPlanilla', (req, res) => {
+
+  let fecha = '';
+  let vehiculoSeleccionado = '';
+  let rutaSeleccionada = '';
+  let buscando = false;
+  ventas = []; // para asegurarme que ventas esta vacio
+  
+  let productos = [];
+  let contado = 0;
+  let credito = 0;
+  let abono = 0;
+  let prestados = 0;
+  let recuperados = 0;
+
+  res.render('verPlanilla.ejs', {
+    fecha,
+    vehiculoSeleccionado,
+    rutaSeleccionada, 
+    vehiculos,
+    rutas, 
+    ventas,
+    buscando,
+    productos,
+    contado,
+    credito,
+    abono,
+    prestados,
+    recuperados
+  })
+})
+
+app.post('/ver-planilla-encontrada', async (req, res) => {
+
+  const fecha = req.body.fecha;
+  const vehiculo = req.body.vehiculo;
+  const ruta = req.body.ruta;
+  let buscando = true;
+
+  let productos = [];
+  let contado = 0;
+  let credito = 0;
+  let abono = 0;
+  let prestados = 0;
+  let recuperados = 0;
+
+  try {
+    const result = await db.query('SELECT * FROM ventas WHERE fecha = $1 AND vehiculo = $2 AND ruta = $3', [fecha, vehiculo, ruta]);
+
+    ventas = result.rows;
+
+    // Creando lista de productos vendidos con sus cantidades
+
+    let productosEncontrados = {};
+
+    ventas.forEach(venta => {
+      productos.push([venta.producto, venta.cantidad])
+    });
+
+    productos.forEach(([producto, cantidad]) => {
+      if(productosEncontrados[producto]) {
+        productosEncontrados[producto] += cantidad;
+      } else {
+        productosEncontrados[producto] = cantidad;
+      }
+    })
+
+    productos = Object.entries(productosEncontrados);
+
+    // Calculo de los contados, creditos, abonos, prestados y recuperados
+
+    ventas.forEach(venta => {
+      contado += venta.contado;
+      credito += venta.credito;
+      abono += venta.abono;
+
+      if(venta.prestado_recuperado > 0) {
+        prestados += venta.prestado_recuperado
+      } else if (venta.prestado_recuperado < 0) {
+        recuperados += Math.abs(venta.prestado_recuperado)
+      }
+    })
+
+    res.render('verPlanilla.ejs', {
+      fecha,
+      vehiculoSeleccionado: vehiculo,
+      rutaSeleccionada: ruta,
+      vehiculos, 
+      rutas, 
+      ventas,
+      buscando,
+      productos,
+      contado,
+      credito,
+      abono,
+      prestados,
+      recuperados
+    })
+
+  } catch (error) {
+    console.error('Error al cargar la planilla: ', error)
+  }
+
+})
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

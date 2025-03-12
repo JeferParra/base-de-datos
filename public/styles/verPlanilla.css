@@ -1,0 +1,274 @@
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('../assets/company.jpg');
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: calc(100vh - 164px);
+  z-index: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 95%;
+}
+
+/* contenido */
+
+.counter {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+  width: 100vw;
+  z-index: 1;
+}
+
+.resumen {
+  text-align: center;
+  font-weight: bold;
+  background-color: white;
+}
+
+.title {
+  margin-top: 20px;
+  background-color: white;
+  z-index: 1;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(21, 50px);
+  grid-gap: 30px 15px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.counter label {
+  font-weight: bold;
+  text-align: right;
+  grid-column: span 2;
+  padding-right: 0;
+}
+
+.subtitulo {
+  grid-column: span 21;
+}
+
+#fecha {
+  grid-column: span 5;
+}
+
+#vehiculo {
+  grid-column: span 5;
+}
+
+#ruta {
+  grid-column: span 5;
+}
+
+form>button {
+  width: 100px;
+  height: 50px;
+  grid-column: 1 / -1;
+  justify-self: center;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+form>button:hover {
+  background-color: #c2c2c2;
+}
+
+/* tabla de datos clientes */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 10px;
+  border-collapse: collapse;
+  padding-bottom: 50px
+}
+
+/* tabla de datos header */
+
+.header-table {
+  font-weight: bold;
+}
+
+.header-table, .item-table {
+  display: grid;
+  grid-template-columns: repeat(23, 1fr);
+  width: 90vw;
+}
+
+.header-table {
+  background-color: #c2c2c2;
+}
+
+.item-title {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+/* tabla de tados */
+
+.item-table {
+  background-color: #f4f4f4;
+}
+
+.item-table .item {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-table .item {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.item-table input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-table .codigo, .item-table div.codigo {
+  grid-column: span 2;
+}
+
+.header-table .producto, .item-table div.producto {
+  grid-column: span 3;
+}
+
+.header-table .valor, .item-table div.valor {
+  grid-column: span 2;
+}
+
+.header-table .cantidad, .item-table div.cantidad {
+  grid-column: span 2;
+}
+
+.header-table .contado, .item-table div.contado {
+  grid-column: span 2;
+}
+
+.header-table .credito, .item-table div.credito {
+  grid-column: span 2;
+}
+
+.header-table .abono, .item-table div.abono {
+  grid-column: span 2;
+}
+
+.header-table .saldo, .item-table div.saldo {
+  grid-column: span 2;
+}
+
+.header-table .botellones, .item-table div.botellones {
+  grid-column: span 2;
+}
+
+.header-table .totalBotellones, .item-table div.totalBotellones {
+  grid-column: span 2;
+}
+
+.header-table .formaDePago, .item-table div.formaDePago {
+  grid-column: span 2;
+  border-right: 1px solid black;
+}
+
+.header-table .button, .item-table div.button {
+  grid-column: span 0;
+}
+
+.item.button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.item > .done-cancel {
+  width: 100%;
+  height: 100%;
+}
+
+.item > .done-cancel > button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 100%;
+  border: none;
+}
+
+.item.button > button {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.item.button > button:hover, .item > .done-cancel > button:hover {
+  background-color: #c2c2c2;
+}
+
+/* cuadro resumen */
+
+.tabla-resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 90vw;
+}
+
+.tabla-resumen .titulo-cuadro-resumen {
+  background-color: #c2c2c2;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 20px;
+  border: 1px solid black;
+}
+
+.cuadro-resumen .item-resumen {
+  background-color: #f4f4f4;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  border: 1px solid black;
+  border-top: none;
+}
+
+.cuadro-resumen .item-resumen .nombre {
+  border-right: 1px solid black;
+}
+
+.cuadro-resumen .item-resumen .nombre, .cuadro-resumen .item-resumen .cantidad {
+  padding: 4px;
+}

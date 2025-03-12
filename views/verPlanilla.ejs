@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base de datos Rutas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/headerFooter.css">
+  <link rel="stylesheet" href="styles/verPlanilla.css">
+
+</head>
+<body>
+
+<%- include('partials/header.ejs') %>
+<div class="counter">
+
+  <h1 class="title">Cargar Planilla</h1>
+
+  <form class="grid-container" action="/ver-planilla-encontrada" method="post">
+
+    <h4 class="subtitulo">Datos de la planilla: </h3>
+    
+    <label for="fecha">Fecha:</label>
+    <input type="date" name="fecha" id="fecha" value="<%= fecha ? fecha : '' %>" required>
+
+    <label for="vehiculo">Vehiculo:</label>
+    <select type="text" id="vehiculo" name="vehiculo" required>
+      <option value="" disabled selected>Seleccione</option>
+    <% for(let vehiculo of vehiculos) {%>
+      <option value="<%=vehiculo.vehiculo%>" <%= vehiculo.vehiculo === vehiculoSeleccionado ? 'selected' : '' %>>
+        <%=vehiculo.vehiculo%>
+      </option>
+    <% } %>
+    </select>
+
+    <label for="ruta">Ruta:</label>
+    <select type="text" id="ruta" name="ruta" required>
+      <option value="" disabled selected>Seleccione</option>
+      <% for(let ruta of rutas) {%>
+        <option value="<%= ruta.ruta %>" <%= ruta.ruta === rutaSeleccionada ? 'selected' : '' %>>
+          <%= ruta.ruta %>
+        </option>
+      <% } %>
+    </select>
+
+    <button type="submit">Cargar</button>
+
+  </form>
+</div>
+
+<div class="table" <%= buscando ? '' : 'hidden' %>>
+
+  <div class="resumen">Registros encontrados: <%= ventas.length %></div>
+  
+  <div class="header-table">
+    <div class="item-title codigo">Codigo</div>
+    <div class="item-title producto">Producto</div>
+    <div class="item-title valor">Valor</div>
+    <div class="item-title cantidad">Cantidad</div>
+    <div class="item-title contado">Contado</div>
+    <div class="item-title credito">Credito</div>
+    <div class="item-title abono">Abono</div>
+    <div class="item-title saldo">Saldo?</div>
+    <div class="item-title botellones">Bot P(+) R(-)</div>
+    <div class="item-title totalBotellones">T. Botellones</div>
+    <div class="item-title formaDePago">F. de pago?</div>
+    <!-- <div class="item-title button"></div> -->
+  </div>
+
+  <div class="item-table">
+    
+    <% for(let venta of ventas) { %>
+
+      <div class="item codigo">
+        <label for="codigo"><%= venta.codigo %></label>
+      </div>
+  
+      <div class="item producto">
+        <label id="producto-label-<%=venta.id%>" for="producto"><%= venta.producto %></label>
+      </div>
+  
+      <div class="item valor">
+        <label id="valor-label-<%=venta.id%>" for="valor">$ <%= venta.valor %></label>
+      </div>
+  
+      <div class="item cantidad">
+        <label id="cantidad-label-<%=venta.id%>" for="cantidad"><%= venta.cantidad %></label>
+      </div>
+  
+      <div class="item contado">
+        <label id="contado-label-<%=venta.id%>" for="contado">$ <%= venta.contado %></label>
+      </div>
+  
+      <div class="item credito">
+        <label id="credito-label-<%=venta.id%>" for="credito">$ <%= venta.credito %></label>
+      </div>
+  
+      <div class="item abono">
+        <label id="abono-label-<%= venta.id %>" for="abono">$ <%= venta.abono %></label>
+      </div>
+  
+      <div class="item saldo">
+        <label id="saldo-label-<%= venta.id %>" for="saldo">$ <%= venta.saldo %></label>
+      </div>
+  
+      <div class="item botellones">
+        <label for="botellones"><%= venta.prestado_recuperado %></label>
+      </div>
+  
+      <div class="item totalBotellones">
+        <label for="totalBotellones"><%= venta.botellones %></label>
+      </div>
+      
+      <div class="item formaDePago">
+        <label id="formaDePago-label-<%= venta.id %>" for="formaDePago"><%= venta.forma_de_pago %></label>
+      </div>
+
+    <% } %>
+
+  </div>
+
+  <div class="tabla-resumen">
+
+    <div class="cuadro-resumen">
+      <!-- bucle for of para sacar todos los productos -->
+
+      <p class="titulo-cuadro-resumen">Cuadro resumen</p>
+
+      <% for(let producto of productos) { %>
+        <div class="productos-vendidos item-resumen">
+          <div class="nombre"><%= producto[0] %></div>
+          <div class="cantidad"><%= producto[1] %></div>
+        </div>
+      <% } %>
+
+      <div class="contado item-resumen">
+        <div class="nombre">Contado</div>
+        <div class="cantidad">$ <%= contado %></div>
+      </div>
+
+      <div class="credito item-resumen">
+        <div class="nombre">Credito</div>
+        <div class="cantidad">$ <%= credito %></div>
+      </div>
+
+      <div class="abono item-resumen">
+        <div class="nombre">Abono</div>
+        <div class="cantidad">$ <%= abono %></div>
+      </div>
+
+      <div class="prestados item-resumen">
+        <div class="nombre">Prestados</div>
+        <div class="cantidad"><%= prestados %></div>
+      </div>
+
+      <div class="recuperados item-resumen">
+        <div class="nombre">Recuperados</div>
+        <div class="cantidad"><%= recuperados %></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  let fecha = new Date()
+
+  function mostrarConsola() {
+    const click = document.getElementById('fecha')
+    console.log(click.value)
+  }
+
+  function calcularContado(pago, precio, cantidad, saldo) {
+
+    const compra = precio*cantidad;
+
+    if(pago <= compra && saldo === 0) {
+      return pago;
+    } else if((compra + saldo) === pago) {
+      return compra;
+    } else if (!pago || pago === 0) {
+      return 0;
+    }else {return 'Error'}
+  }
+
+  function calcularCredito(pago, precio, saldo) {
+    if(!pago) {
+      return precio
+    }
+  }
+
+  function activarFormaDePago (pago) {
+
+    console.log(pago)
+    
+    if(pago != 0) {
+      document.getElementById('formaDePago').removeAttribute('disabled');
+      console.log('mas de 0')
+    } else if(pago == 0) {
+      document.getElementById('formaDePago').setAttribute('disabled', true);
+      console.log('el valor es cero')
+    } else {
+      console.log('nada')
+    }
+  }
+
+</script>
+<%- include('partials/footer.ejs') %>
