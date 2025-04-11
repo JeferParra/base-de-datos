@@ -128,7 +128,7 @@ app.post('/buscar-filtrado-clientes', async (req, res) => {
   }
 
   try {
-    const result = await db.query(query, condiciones);
+    const result = await db.query(`${query} ORDER BY cliente_id ASC`, condiciones);
     clientes = result.rows;
 
     res.render('buscarClientes.ejs', {
@@ -140,6 +140,58 @@ app.post('/buscar-filtrado-clientes', async (req, res) => {
     console.error('Error al realizar la consulta: ', error)
   }
 });
+
+// Editar cliente en buscar cliente
+
+app.post('/editar-cliente', async (req, res) => {
+
+
+  const {codigo, nombre, direccion, barrio, telefono, descripcion, vehiculo, ruta, estado} = req.body;
+
+  try {
+    
+    const query = `
+      UPDATE clientes
+      SET
+        nombre = $1,
+        direccion = $2,
+        barrio = $3,
+        telefono = $4,
+        descripcion = $5,
+        vehiculo = $6,
+        ruta = $7,
+        estado = $8
+      WHERE codigo = $9
+      RETURNING *;
+    `;
+
+    const values = [nombre, direccion, barrio, telefono, descripcion, vehiculo, ruta, estado, codigo];
+
+    const result = await db.query(query, values);
+    
+    const clienteActualizado = result.rows[0];
+
+    const actualizarCambio = clientes.map(cliente => {
+      if (cliente.codigo === clienteActualizado.codigo) {
+        return clienteActualizado
+      }
+      return cliente;
+    })
+
+    clientes = actualizarCambio;
+
+
+    res.render('buscarClientes.ejs', {
+      vehiculos,
+      rutas,
+      clientes
+    })
+
+  } catch (error) {
+    console.error(error)
+  }
+
+})
 
 // Historial Cliente
 
@@ -285,24 +337,31 @@ app.post('/cargar-venta', async (req, res) => {
     contado = pago;
     credito = compra - contado;
     saldo = credito;
+    console.log('opcion 1');
   } else if ((compra + saldo) === pago) {
     abono = saldo;
     contado = compra;
+    console.log('opcion 2');
   } else if (!pago || pago === 0) {
     credito = compra;
     saldo = saldo + credito;
-  } else if (pago > compra && pago > saldo && (compra + saldo) > pago) {
+    console.log('opcion 3');
+  } else if (pago >= compra && pago > saldo && (compra + saldo) > pago) {
     credito = compra + saldo - pago;
     contado = compra - credito;
     abono = pago - contado;
     saldo = credito;
+    console.log('opcion 4');
   } else if (pago < saldo) {
     credito = compra;
     abono = pago;
     saldo = saldo + compra - pago;
+    console.log('opcion 5');
   } else if (pago > (saldo + compra)) {
     console.log("Se esta pagando mas de lo que debe")
     return res.status(400).send("Error: Se está pagando más de lo que debe");
+  } else {
+    console.log('No esta dentro de las opciones')
   }
 
   let ultimaVenta = {

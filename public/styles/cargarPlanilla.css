@@ -134,12 +134,13 @@ form>button:hover {
 
 .header-table, .item-table {
   display: grid;
-  grid-template-columns: repeat(25, 1fr);
-  font-weight: bold;
+  grid-template-columns: repeat(23, 1fr);
   width: 90vw;
 }
 
 .header-table {
+  font-weight: bold;
+  text-align: center;
   background-color: #c2c2c2;
 }
 
@@ -220,10 +221,6 @@ form>button:hover {
 
 .header-table .formaDePago, .item-table div.formaDePago {
   grid-column: span 2;
-}
-
-.header-table .button, .item-table div.button {
-  grid-column: span 1;
 }
 
 .item.button {

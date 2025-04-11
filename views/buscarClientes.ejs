@@ -74,12 +74,12 @@
     <div class="item-title ruta">Ruta</div>
     <div class="item-title saldo">Saldo</div>
     <div class="item-title estado">Estado</div>
-    <div class="item-title button"></div>
+    <div class="item-title button">Editar</div>
   </div>
 
   <% for(let cliente of clientes) {%>
 
-    <form class="editar" action="/edit" method="post" id="formCliente">
+    <form class="editar" action="/editar-cliente" method="post" id="formCliente-codigo-<%= cliente.codigo %>">
       <div class="item-table">
 
         <div class="item codigo">
@@ -157,14 +157,13 @@
           <select name="estado" id="estado-input-<%=cliente.codigo%>" hidden>
             <% let opcionInicialEstado = cliente.estado %>
             <% if(opcionInicialEstado === 'Activo') { %>
-              <option value="activo">Activo</option>
-              <option value="inactivo">Inactivo</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             <% } else { %>
-              <option value="inactivo">Inactivo</option>
-              <option value="activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+              <option value="Activo">Activo</option>
             <% } %>
           </select>
-          <input id="estado-input-<%=cliente.codigo%>" type="text" name="estado" value="<%= cliente.estado %>" hidden >
         </div>
 
         <div class="item button">
